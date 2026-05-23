@@ -108,12 +108,12 @@
     <!-- Taxi & Driver Details -->
     <h3>Taxi Details</h3>
     <p>
-      Piaggio Ape Tuk<br>
+      Piaggio - ape Tuk<br>
       Vehicle Registration: AAQ****
     </p>
 
-    <h4>Driver details </h4>
-    <p>Abdurraafi </p>
+    <h4>Driver Details </h4>
+    <p>Driver Name: ABDURRAAFI</p>
     </p>Verified Driver</p>
     <img src="driver.jpg" alt="Driver Abdurraafi" style="width:100px; border-radius:50%; margin-top:10px;">
     <p>Follow and Book on Facebook<br>
@@ -125,6 +125,40 @@
       © 2026 PIAGGIO TUK-TUK TAXI RRR | SRI LANKA<br>
       <small>Driver details shown after booking confirmation for privacy.</small>
     </div>
+    <?php
+session_start();
+
+$conn = mysqli_connect("localhost", "USERNAME", "PASSWORD", "DBNAME");
+
+if(!$conn){
+  die("Database connect ஆகல: " . mysqli_connect_error());
+}
+
+$result = mysqli_query($conn, "SELECT * FROM reviews ORDER BY id DESC");
+
+echo "<h2>All Reviews</h2>";
+
+while($row = mysqli_fetch_assoc($result)){
+  echo "<div style='border:1px solid #ccc; padding:10px; margin:10px; border-radius:8px;'>";
+  echo "<b>".$row['name']."</b> - ".$row['created_at']."<br>";
+  echo $row['review']."<br>";
+  echo "<a href='delete_review.php?id=".$row['id']."' 
+        onclick='return confirm(\"இந்த review-ஐ delete பண்ணிடலாமா?\")' 
+        style='color:red; text-decoration:none;'>Delete</a>";
+  echo "</div>";
+}
+?>
+    <?php
+session_start();
+
+$conn = mysqli_connect("localhost", "USERNAME", "PASSWORD", "DBNAME");
+
+$id = $_GET['id'];
+mysqli_query($conn, "DELETE FROM reviews WHERE id = $id");
+
+header("Location: admin_reviews.php");
+exit;
+?>
     
    <!-- Review Form -->
 <div id="review-form" style="margin:20px 0;">
