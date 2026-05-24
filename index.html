@@ -134,8 +134,27 @@
 <div id="review-form" style="margin:20px 0;">
   <input type="text" id="name" placeholder="your name" style="display:block; margin:5px 0; padding:8px; width:100%;">
   <textarea id="message" placeholder="your review" style="display:block; margin:5px 0; padding:8px; width:100%;"></textarea>
-  <button onclick="submitReview()" style="padding:10px 20px;">Submit</button>
+  <button on click="submitReview()" style="padding:10px 20px;">Submit</button>
 </div>
+      <?php
+session_start();
+// உங்க admin login check இங்கே போடுங்க
+// if(!isset($_SESSION['admin'])){ header("Location: login.php"); exit; }
+
+$conn = mysqli_connect("localhost", "username", "password", "dbname");
+
+$result = mysqli_query($conn, "SELECT * FROM reviews ORDER BY id DESC");
+
+while($row = mysqli_fetch_assoc($result)){
+  echo "<div style='border:1px solid #ccc; padding:10px; margin:10px;'>";
+  echo "<b>".$row['name']."</b><br>";
+  echo $row['review']."<br>";
+  echo "<a href='delete_review.php?id=".$row['id']."' 
+        onclick='return confirm(\"இந்த review-ஐ delete பண்ணிடலாமா?\")' 
+        style='color:red;'>Delete</a>";
+  echo "</div>";
+}
+?>
 
 <!-- Reviews Show ஆகும் இடம் -->
 <div id="reviews-list" style="margin-top:20px;"></div>
