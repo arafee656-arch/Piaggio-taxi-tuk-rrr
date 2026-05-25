@@ -124,54 +124,62 @@
     <loc>https://arafee656-arch.github.io/Piaggio-taxi-tuk-rrr/</loc>
   </url>
 </urlset>
+    ... உங்க existing content ...
+
+<!-- Reviews Section - இங்க paste பண்ணுங்க -->
+<div class="container">
+  <h2>Reviews எழுதுங்க</h2>
+  ...
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Piaggio Tuk</p>
+  </div>
    </p>Thank you very much for following me.</p>
     
     <!-- Footer -->
     <div class="footer">
-      © 2026 PIAGGIO TUK-TUK TAXI RRR | SRI LANKA<br
-    
-   <!-- Review Form -->
-<div id="review-form" style="margin:20px 0;">
-  <input type="text" id="name" placeholder="your name" style="display:block; margin:5px 0; padding:8px; width:100%;">
-  <textarea id="message" placeholder="your review" style="display:block; margin:5px 0; padding:8px; width:100%;"></textarea>
-  <button on click="submitReview()" style="padding:10px 20px;">Submit</button>
+      © 2026 PIAGGIO TUK-TUK TAXI RRR | SRI LANKA<br>
+  </div>
+</body>
+<!-- Reviews Section Start -->
+<div class="container" style="max-width: 600px; margin: 30px auto; background: white; padding: 20px; border-radius: 10px;">
+  <h2 style="text-align:center;">Reviews எழுதுங்க</h2>
+  
+  <input type="text" id="name" placeholder="உங்க பேர்" style="width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:5px;">
+  <textarea id="message" rows="4" placeholder="உங்க review எழுதுங்க" style="width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:5px;"></textarea>
+  <button onclick="submitReview()" style="width:100%; padding:10px; background:#4285f4; color:white; border:none; border-radius:5px; cursor:pointer;">Submit</button>
+
+  <h3 style="margin-top:30px;">மக்கள் Reviews</h3>
+  <div id="reviews-list">Loading...</div>
 </div>
-      
-<!-- Reviews Show ஆகும் இடம் -->
-<div id="reviews-list" style="margin-top:20px;"></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { get addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyBivXYRHQ_NLsc-zfYpDyF...",
-    authDomain: "piaggio-tuk-reviews.firebaseapp.com",
-    projectId: "piaggio-tuk-reviews",
-    storageBucket: "piaggio-tuk-reviews.appspot.com",
-    messagingSenderId: "353021458919",
-    appId: "1:353021458919:web:18e60e0et..."
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
   window.submitReview = async function() {
-    const name = document.getElementById("name").value;
-    const message = document.getElementById("message").value;
-    
+    const name = document.getElementById("name").value.trim();
+    const message = document.getElementById("message").value.trim();
     if(name && message){
-      await addDoc(collection(db, "reviews"), {
-        name: name,
-        message: message,
-        time: new Date()
-      });
+      await addDoc(collection(db, "reviews"), {name, message, time: new Date()});
       document.getElementById("name").value = "";
       document.getElementById("message").value = "";
       alert("Review submit ஆச்சு!");
       loadReviews();
-    } else {
-      alert("பேரும் message-உம் போடுங்க");
     }
   }
 
@@ -180,13 +188,11 @@
     const querySnapshot = await getDocs(q);
     let html = "";
     querySnapshot.forEach((doc) => {
-      html += `<div style="border-bottom:1px solid #ccc; padding:10px 0;"><b>${doc.data().name}</b><br>${doc.data().message}</div>`;
+      html += `<div style="border-bottom:1px solid #eee; padding:15px 0;"><b>${doc.data().name}</b><br>${doc.data().message}</div>`;
     });
-    document.getElementById("reviews-list").innerHTML = html;
+    document.getElementById("reviews-list").innerHTML = html || "<p>இன்னும் review இல்லை</p>";
   }
-
   loadReviews();
-  </script> 
-  </div>
-</body>
+</script>
+<!-- Reviews Section End -->
 </html>
